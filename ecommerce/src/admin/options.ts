@@ -9,6 +9,7 @@ import orderResourceOptions from './resources/orderResource.js';
 import orderItemResourceOptions from './resources/orderItemResource.js';
 import settingResourceOptions from './resources/settingResource.js';
 import adminDashboard from './pages/adminDashboard.js';
+import settingsPage from './pages/settings.js';
 
 const options: AdminJSOptions = {
   componentLoader,
@@ -95,6 +96,7 @@ const options: AdminJSOptions = {
   },
   pages: {
     dashboard: adminDashboard,
+    settings: settingsPage,
   },
   dashboard: {
     component: 'AdminDashboard',
