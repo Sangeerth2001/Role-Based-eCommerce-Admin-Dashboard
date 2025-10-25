@@ -8,6 +8,7 @@ import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
 import initializeDb from './db/index.js';
 import authRoutes from './routes/auth.js';
+import dashboardRoutes from './routes/dashboard.js';
 
 const port = process.env.PORT || 3000;
 
@@ -60,6 +61,7 @@ const start = async () => {
 
   // API Routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/dashboard', dashboardRoutes);
 
   app.listen(port, () => {
     console.log(`AdminJS available at http://localhost:${port}${admin.options.rootPath}`);

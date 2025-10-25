@@ -8,6 +8,7 @@ import productResourceOptions from './resources/productResource.js';
 import orderResourceOptions from './resources/orderResource.js';
 import orderItemResourceOptions from './resources/orderItemResource.js';
 import settingResourceOptions from './resources/settingResource.js';
+import adminDashboard from './pages/adminDashboard.js';
 
 const options: AdminJSOptions = {
   componentLoader,
@@ -91,6 +92,12 @@ const options: AdminJSOptions = {
   assets: {
     styles: ['/public/admin-custom.css'],
     scripts: ['/public/admin-custom.js'],
+  },
+  pages: {
+    dashboard: adminDashboard,
+  },
+  dashboard: {
+    component: 'AdminDashboard',
   },
 };
 
