@@ -15,27 +15,72 @@ const options: AdminJSOptions = {
   resources: [
     {
       resource: User,
-      options: userResourceOptions,
+      options: {
+        ...userResourceOptions,
+        // Only admins can access user management
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+      },
     },
     {
       resource: Category,
-      options: categoryResourceOptions,
+      options: {
+        ...categoryResourceOptions,
+        // Both admins and users can view categories
+        isAccessible: ({ currentAdmin }) => !!currentAdmin,
+        isVisible: ({ currentAdmin }) => !!currentAdmin,
+      },
     },
     {
       resource: Product,
-      options: productResourceOptions,
+      options: {
+        ...productResourceOptions,
+        // Both admins and users can view products
+        isAccessible: ({ currentAdmin }) => !!currentAdmin,
+        isVisible: ({ currentAdmin }) => !!currentAdmin,
+      },
     },
     {
       resource: Order,
-      options: orderResourceOptions,
+      options: {
+        ...orderResourceOptions,
+        // Both admins and users can view orders (users will only see their own)
+        isAccessible: ({ currentAdmin }) => !!currentAdmin,
+        isVisible: ({ currentAdmin }) => !!currentAdmin,
+        actions: {
+          list: {
+            before: async (request, context) => {
+              const { currentAdmin } = context;
+              // If user is not an admin, filter orders to show only their own
+              if (currentAdmin && currentAdmin.role !== 'admin') {
+                request.query = {
+                  ...request.query,
+                  'filters.userId': currentAdmin.id,
+                };
+              }
+              return request;
+            },
+          },
+        },
+      },
     },
     {
       resource: OrderItem,
-      options: orderItemResourceOptions,
+      options: {
+        ...orderItemResourceOptions,
+        // Only admins can access order items directly
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+      },
     },
     {
       resource: Setting,
-      options: settingResourceOptions,
+      options: {
+        ...settingResourceOptions,
+        // Only admins can access settings
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+      },
     },
   ],
   databases: [],
