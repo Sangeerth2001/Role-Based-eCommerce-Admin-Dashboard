@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import AdminJS from 'adminjs';
 import { buildAuthenticatedRouter } from '@adminjs/express';
 
@@ -8,6 +10,10 @@ import initializeDb from './db/index.js';
 import authRoutes from './routes/auth.js';
 
 const port = process.env.PORT || 3000;
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const start = async () => {
   const app = express();
@@ -43,6 +49,14 @@ const start = async () => {
   // Body parser middleware - MUST come after AdminJS router
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Serve static files (signup page)
+  app.use('/public', express.static(path.join(__dirname, '../public')));
+
+  // Signup page route
+  app.get('/signup', (_req, res) => {
+    res.sendFile(path.join(__dirname, '../public/signup.html'));
+  });
 
   // API Routes
   app.use('/api/auth', authRoutes);
