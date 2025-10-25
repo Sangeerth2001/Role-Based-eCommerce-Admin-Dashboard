@@ -1,0 +1,119 @@
+/* Clean Professional Admin Login Page Styling */
+
+/* Override AdminJS background */
+body {
+  background: #f5f7fa !important;
+}
+
+/* Style the login wrapper */
+[class*="LoginWrapper"],
+[class*="Login_Wrapper"] {
+  background: #f5f7fa !important;
+  padding: 20px !important;
+}
+
+/* Style the login box/card */
+[class*="LoginBox"],
+[class*="Login_Box"],
+form[action*="login"] {
+  background: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  padding: 48px 40px !important;
+  max-width: 400px !important;
+  border: 1px solid #e8e8e8 !important;
+  margin: 0 auto !important;
+}
+
+/* Style form inputs */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 10px 12px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  transition: all 0.2s !important;
+}
+
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="text"]:hover {
+  border-color: #40a9ff !important;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  border-color: #40a9ff !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1) !important;
+  outline: none !important;
+}
+
+/* Style labels */
+label {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+  margin-bottom: 6px !important;
+}
+
+/* Style submit button */
+button[type="submit"],
+[class*="Button"],
+[class*="button"] {
+  background: #1890ff !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 10px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+}
+
+button[type="submit"]:hover,
+[class*="Button"]:hover,
+[class*="button"]:hover {
+  background: #40a9ff !important;
+}
+
+button[type="submit"]:active,
+[class*="Button"]:active,
+[class*="button"]:active {
+  background: #096dd9 !important;
+}
+
+/* Style headings */
+h1, h2, h3 {
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+}
+
+/* Remove gradient backgrounds */
+[style*="gradient"] {
+  background: #f5f7fa !important;
+}
+
+/* Custom signup link container styling */
+#custom-signup-link {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #666;
+}
+
+#custom-signup-link a {
+  color: #1890ff !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+#custom-signup-link a:hover {
+  color: #40a9ff !important;
+}
