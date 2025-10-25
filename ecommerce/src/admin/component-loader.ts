@@ -10,5 +10,6 @@ const componentLoader = new ComponentLoader();
 // Register custom components
 const componentsDir = path.join(__dirname, 'components');
 componentLoader.add('AdminDashboard', path.join(componentsDir, 'AdminDashboard'));
+componentLoader.add('SettingsPage', path.join(componentsDir, 'SettingsPage'));
 
 export default componentLoader;
