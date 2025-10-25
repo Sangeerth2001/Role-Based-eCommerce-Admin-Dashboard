@@ -8,10 +8,10 @@ const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const JWT_EXPIRES_IN = '7d'; // Token expires in 7 days
 
-// Register endpoint
+// Register endpoint - Only creates 'user' role accounts
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     // Validate required fields
     if (!name || !email || !password) {
@@ -31,11 +31,12 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 
     // Create new user (password will be hashed automatically by beforeCreate hook)
+    // Role is always 'user' - admin accounts must be created directly in database
     const user = await User.create({
       name,
       email,
       password,
-      role: role || 'user', // Default to 'user' role
+      role: 'user', // Always force 'user' role for registration
     });
 
     // Generate JWT token

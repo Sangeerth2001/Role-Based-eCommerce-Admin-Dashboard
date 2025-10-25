@@ -7,6 +7,14 @@ const options: AdminJSOptions = {
   rootPath: '/admin',
   resources: [],
   databases: [],
+  branding: {
+    companyName: 'eCommerce Admin',
+    logo: false,
+  },
+  assets: {
+    styles: ['/public/admin-custom.css'],
+    scripts: ['/public/admin-custom.js'],
+  },
 };
 
 export default options;
