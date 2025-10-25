@@ -28,42 +28,27 @@ const options: AdminJSOptions = {
       resource: Category,
       options: {
         ...categoryResourceOptions,
-        // Both admins and users can view categories
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
+        // Only admins can access categories
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
       },
     },
     {
       resource: Product,
       options: {
         ...productResourceOptions,
-        // Both admins and users can view products
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
+        // Only admins can access products
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
       },
     },
     {
       resource: Order,
       options: {
         ...orderResourceOptions,
-        // Both admins and users can view orders (users will only see their own)
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
-        actions: {
-          list: {
-            before: async (request, context) => {
-              const { currentAdmin } = context;
-              // If user is not an admin, filter orders to show only their own
-              if (currentAdmin && currentAdmin.role !== 'admin') {
-                request.query = {
-                  ...request.query,
-                  'filters.userId': currentAdmin.id,
-                };
-              }
-              return request;
-            },
-          },
-        },
+        // Only admins can access orders
+        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
       },
     },
     {

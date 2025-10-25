@@ -5,7 +5,7 @@ import { User } from '../db/index.js';
 
 /**
  * Authentication provider that validates against the database
- * Allows both admin and regular users to access the admin panel
+ * Only allows admin users to access the admin panel
  */
 const provider = new DefaultAuthProvider({
   componentLoader,
@@ -24,7 +24,11 @@ const provider = new DefaultAuthProvider({
       return null;
     }
 
-    // Allow both admin and regular users to access admin panel
+    // Only allow admin users to access admin panel
+    if (user.role !== 'admin') {
+      return null;
+    }
+
     // Return user data for session
     return {
       email: user.email,

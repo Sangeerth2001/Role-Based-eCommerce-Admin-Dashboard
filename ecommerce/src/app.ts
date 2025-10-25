@@ -10,6 +10,11 @@ import initializeDb from './db/index.js';
 import authRoutes from './routes/auth.js';
 import dashboardRoutes from './routes/dashboard.js';
 import settingsRoutes from './routes/settings.js';
+import productRoutes from './routes/api/productRoutes.js';
+import categoryRoutes from './routes/api/categoryRoutes.js';
+import cartRoutes from './routes/api/cartRoutes.js';
+import userRoutes from './routes/api/userRoutes.js';
+import checkoutRoutes from './routes/api/checkoutRoutes.js';
 
 const port = process.env.PORT || 3000;
 
@@ -64,6 +69,13 @@ const start = async () => {
   app.use('/api/auth', authRoutes);
   app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/settings', settingsRoutes);
+
+  // User-facing API routes
+  app.use('/api/products', productRoutes);
+  app.use('/api/categories', categoryRoutes);
+  app.use('/api/cart', cartRoutes);
+  app.use('/api/user', userRoutes);
+  app.use('/api/checkout', checkoutRoutes);
 
   app.listen(port, () => {
     console.log(`AdminJS available at http://localhost:${port}${admin.options.rootPath}`);

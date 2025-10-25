@@ -8,6 +8,7 @@ import Product from './models/Product.js';
 import Order from './models/Order.js';
 import OrderItem from './models/OrderItem.js';
 import Setting from './models/Setting.js';
+import Cart from '../models/Cart.js';
 
 AdminJS.registerAdapter({
   Database,
@@ -63,6 +64,30 @@ const defineAssociations = () => {
     foreignKey: 'productId',
     as: 'orderItems',
   });
+
+  // Cart belongs to User
+  Cart.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user',
+  });
+
+  // User has many Carts
+  User.hasMany(Cart, {
+    foreignKey: 'userId',
+    as: 'carts',
+  });
+
+  // Cart belongs to Product
+  Cart.belongsTo(Product, {
+    foreignKey: 'productId',
+    as: 'product',
+  });
+
+  // Product has many Carts
+  Product.hasMany(Cart, {
+    foreignKey: 'productId',
+    as: 'carts',
+  });
 };
 
 const initialize = async () => {
@@ -86,6 +111,6 @@ const initialize = async () => {
 };
 
 // Export models
-export { User, Category, Product, Order, OrderItem, Setting };
+export { User, Category, Product, Order, OrderItem, Setting, Cart };
 
 export default initialize;
