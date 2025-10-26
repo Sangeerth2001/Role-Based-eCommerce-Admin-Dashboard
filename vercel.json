@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "ecommerce/src/app.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "ecommerce/src/app.ts"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "DATABASE_URL": "@database_url",
+    "DATABASE_DIALECT": "postgres",
+    "JWT_SECRET": "@jwt_secret",
+    "COOKIE_SECRET": "@cookie_secret"
+  }
+}
