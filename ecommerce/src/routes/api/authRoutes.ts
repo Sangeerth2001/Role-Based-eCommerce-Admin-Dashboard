@@ -16,8 +16,11 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password, role } = req.body;
 
+    console.log('Register attempt:', { name, email, role: role || 'user' });
+
     // Validation
     if (!name || !email || !password) {
+      console.log('Validation failed: missing required fields');
       res.status(400).json({
         success: false,
         message: 'Name, email, and password are required',
@@ -104,8 +107,11 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
+    console.log('Login attempt:', { email, passwordProvided: !!password });
+
     // Validation
     if (!email || !password) {
+      console.log('Validation failed: missing credentials');
       res.status(400).json({
         success: false,
         message: 'Email and password are required',
@@ -115,6 +121,8 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
     // Find user by email
     const user = await User.findOne({ where: { email } });
+    console.log('User found:', user ? `Yes (${user.email})` : 'No');
+
     if (!user) {
       res.status(401).json({
         success: false,
@@ -125,6 +133,8 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
     // Verify password using bcrypt
     const isPasswordValid = await user.comparePassword(password);
+    console.log('Password valid:', isPasswordValid);
+
     if (!isPasswordValid) {
       res.status(401).json({
         success: false,
