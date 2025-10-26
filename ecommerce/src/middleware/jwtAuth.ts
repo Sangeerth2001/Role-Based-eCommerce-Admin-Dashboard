@@ -139,6 +139,15 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction): v
 export const authenticateHybrid = (req: Request, res: Response, next: NextFunction): void => {
   // Check session first (AdminJS session)
   const session = (req as any).session;
+
+  // Debug logging
+  console.log('🔍 Session check:', {
+    hasSession: !!session,
+    sessionKeys: session ? Object.keys(session) : [],
+    adminUser: session?.adminUser,
+    cookies: req.headers.cookie,
+  });
+
   const adminUser = session?.adminUser;
 
   if (adminUser) {
@@ -157,9 +166,14 @@ export const authenticateHybrid = (req: Request, res: Response, next: NextFuncti
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('❌ No valid authentication found');
     res.status(401).json({
       success: false,
       message: 'Authentication required. Please login via /admin or provide JWT token',
+      debug: {
+        hasSession: !!session,
+        hasAuthHeader: !!authHeader,
+      },
     });
     return;
   }

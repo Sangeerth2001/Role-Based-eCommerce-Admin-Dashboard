@@ -31,15 +31,24 @@ const UserCart: React.FC = () => {
   const fetchCart = async () => {
     setLoading(true);
     try {
+      console.log('Fetching cart with credentials...');
       const response = await fetch('/api/cart', {
         credentials: 'include', // Use AdminJS session cookies
+        headers: {
+          'Accept': 'application/json',
+        },
       });
 
+      console.log('Cart response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch cart');
+        const errorData = await response.json().catch(() => ({ message: 'Failed to fetch cart' }));
+        console.error('Cart fetch error:', errorData);
+        throw new Error(errorData.message || `Failed to fetch cart (${response.status})`);
       }
 
       const result = await response.json();
+      console.log('Cart data received:', result);
       setCartItems(result.data || []);
       setTotal(parseFloat(result.total) || 0);
       setLoading(false);
