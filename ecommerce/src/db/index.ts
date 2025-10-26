@@ -92,21 +92,25 @@ const defineAssociations = () => {
 
 const initialize = async () => {
   try {
+    console.log('Attempting database connection...');
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('✓ Database connection established successfully');
 
     // Define associations
     defineAssociations();
+    console.log('✓ Model associations defined');
 
     // Sync all models with database (creates tables if they don't exist)
     await sequelize.sync({ alter: true });
-    console.log('All models were synchronized successfully.');
+    console.log('✓ All models synchronized successfully');
 
     return { sequelize };
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error('✗ FATAL: Unable to connect to the database:', error);
+    console.error('Please check your DATABASE_URL environment variable');
 
-    return {};
+    // Exit the process if database connection fails
+    process.exit(1);
   }
 };
 
