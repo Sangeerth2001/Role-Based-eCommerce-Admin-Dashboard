@@ -109,6 +109,21 @@ const start = async () => {
   app.use('/api/user', userRoutes);
   app.use('/api/checkout', checkoutRoutes);
 
+  // Root route - redirect to admin panel
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Role-Based eCommerce Admin Dashboard API',
+      endpoints: {
+        admin: '/admin',
+        api: '/api',
+      },
+      documentation: {
+        adminPanel: `${req.protocol}://${req.get('host')}/admin`,
+        apiBase: `${req.protocol}://${req.get('host')}/api`,
+      },
+    });
+  });
+
   app.listen(port, () => {
     console.log(`AdminJS available at http://localhost:${port}${admin.options.rootPath}`);
     console.log(`API available at http://localhost:${port}/api`);
