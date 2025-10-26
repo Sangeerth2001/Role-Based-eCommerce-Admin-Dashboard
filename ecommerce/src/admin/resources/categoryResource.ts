@@ -1,0 +1,55 @@
+import { ResourceOptions } from 'adminjs';
+import { getActionsConfig } from '../rbac.js';
+
+const categoryResourceOptions: ResourceOptions = {
+  navigation: {
+    name: 'Catalog',
+    icon: 'Tag',
+  },
+  properties: {
+    id: {
+      isVisible: { list: true, filter: true, show: true, edit: false },
+    },
+    name: {
+      isVisible: { list: true, filter: true, show: true, edit: true },
+      isRequired: true,
+    },
+    description: {
+      isVisible: { list: true, filter: false, show: true, edit: true },
+      type: 'textarea',
+    },
+    createdAt: {
+      isVisible: { list: true, filter: true, show: true, edit: false },
+    },
+    updatedAt: {
+      isVisible: { list: false, filter: false, show: true, edit: false },
+    },
+  },
+  listProperties: ['id', 'name', 'description', 'createdAt'],
+  showProperties: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
+  editProperties: ['name', 'description'],
+  filterProperties: ['name', 'createdAt'],
+  // RBAC: Action-level permissions
+  actions: {
+    list: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').list,
+    },
+    show: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').show,
+    },
+    new: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').new,
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').edit,
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').delete,
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').bulkDelete,
+    },
+  },
+};
+
+export default categoryResourceOptions;
