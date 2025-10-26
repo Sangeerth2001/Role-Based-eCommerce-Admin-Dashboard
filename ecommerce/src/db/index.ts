@@ -92,26 +92,28 @@ const defineAssociations = () => {
 
 const initialize = async () => {
   try {
-    console.log('🔌 Attempting database connection...');
+    console.log('Attempting to connect to database...');
     await sequelize.authenticate();
-    console.log('✅ Database connection established successfully');
+    console.log('Database connection successful!');
 
-    // Define associations
     defineAssociations();
-    console.log('✅ Model associations defined');
+    console.log('Model associations defined');
 
-    // Sync all models with database (creates tables if they don't exist)
-    console.log('🔄 Synchronizing database models...');
     await sequelize.sync({ alter: true });
-    console.log('✅ All models synchronized successfully');
+    console.log('Database models synchronized');
 
     return { sequelize };
   } catch (error) {
-    console.error('❌ Unable to connect to the database:', error);
-    console.error('⚠️  The app will start but database features will not work');
-    console.error('⚠️  Please add DATABASE_URL environment variable on Render');
+    console.error('=================================================');
+    console.error('DATABASE CONNECTION FAILED!');
+    console.error('Error:', error);
+    console.error('=================================================');
+    console.error('IMPORTANT: You need to:');
+    console.error('1. Create a PostgreSQL database on Render');
+    console.error('2. Add DATABASE_URL environment variable');
+    console.error('3. Redeploy the service');
+    console.error('=================================================');
 
-    // Return empty object but don't crash - let the app start
     return {};
   }
 };
