@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { createOrder } from '../../controllers/checkoutController.js';
-import { authenticate } from '../../middleware/auth.js';
+import { adminSessionAuth } from '../../middleware/adminSession.js';
 
 const router = Router();
 
-// All checkout routes require authentication
-router.use(authenticate);
+// All checkout routes require AdminJS session authentication
+router.use(adminSessionAuth);
 
 // POST /api/checkout - Create new order
 router.post('/', createOrder);

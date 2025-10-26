@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../db/config.js';
+import sequelize from '../config.js';
 
 interface CartAttributes {
   id: number;

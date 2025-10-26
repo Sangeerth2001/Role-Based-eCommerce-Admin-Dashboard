@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../../controllers/cartController.js';
-import { authenticate } from '../../middleware/auth.js';
+import { adminSessionAuth } from '../../middleware/adminSession.js';
 
 const router = Router();
 
-// All cart routes require authentication
-router.use(authenticate);
+// All cart routes require AdminJS session authentication
+router.use(adminSessionAuth);
 
 // GET /api/cart - Get cart items
 router.get('/', getCart);

@@ -1,4 +1,5 @@
 import { ResourceOptions } from 'adminjs';
+import { getActionsConfig } from '../rbac.js';
 
 const productResourceOptions: ResourceOptions = {
   navigation: {
@@ -46,6 +47,27 @@ const productResourceOptions: ResourceOptions = {
   showProperties: ['id', 'name', 'description', 'price', 'stock', 'categoryId', 'image', 'createdAt', 'updatedAt'],
   editProperties: ['name', 'description', 'price', 'stock', 'categoryId', 'image'],
   filterProperties: ['name', 'price', 'stock', 'categoryId', 'createdAt'],
+  // RBAC: Action-level permissions
+  actions: {
+    list: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').list,
+    },
+    show: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').show,
+    },
+    new: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').new,
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').edit,
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').delete,
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Product').bulkDelete,
+    },
+  },
 };
 
 export default productResourceOptions;

@@ -8,7 +8,7 @@ import Product from './models/Product.js';
 import Order from './models/Order.js';
 import OrderItem from './models/OrderItem.js';
 import Setting from './models/Setting.js';
-import Cart from '../models/Cart.js';
+import Cart from './models/Cart.js';
 
 AdminJS.registerAdapter({
   Database,

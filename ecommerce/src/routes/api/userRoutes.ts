@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { getUserProfile, updateUserProfile, getUserOrders, getUserOrderById } from '../../controllers/userController.js';
-import { authenticate } from '../../middleware/auth.js';
+import { adminSessionAuth } from '../../middleware/adminSession.js';
 
 const router = Router();
 
-// All user routes require authentication
-router.use(authenticate);
+// All user routes require AdminJS session authentication
+router.use(adminSessionAuth);
 
 // GET /api/user/profile - Get user profile
 router.get('/profile', getUserProfile);
