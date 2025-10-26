@@ -60,21 +60,7 @@ const start = async () => {
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
 
-  const router = buildAuthenticatedRouter(
-    admin,
-    {
-      cookiePassword: process.env.COOKIE_SECRET || 'fallback-secret-change-this',
-      cookieName: 'adminjs',
-      provider,
-    },
-    null,
-    null, // Remove session config here since we're using global session
-  );
-
-  // Admin Panel - MUST come before body-parser
-  app.use(admin.options.rootPath, router);
-
-  // API endpoint to get current user (for custom navigation logic)
+  // API endpoint to get current user - MUST be BEFORE AdminJS router
   app.get('/admin/api/getCurrentUser', (req, res) => {
     const session = (req as any).session;
     const currentAdmin = session?.adminUser;
@@ -96,6 +82,20 @@ const start = async () => {
       });
     }
   });
+
+  const router = buildAuthenticatedRouter(
+    admin,
+    {
+      cookiePassword: process.env.COOKIE_SECRET || 'fallback-secret-change-this',
+      cookieName: 'adminjs',
+      provider,
+    },
+    null,
+    null, // Remove session config here since we're using global session
+  );
+
+  // Admin Panel - MUST come before body-parser
+  app.use(admin.options.rootPath, router);
 
   // Body parser middleware - MUST come after AdminJS router
   app.use(express.json());
