@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r dotenv/config dist/app"
+    "start": "npm --prefix ./ecommerce run start"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0",
-    "dotenv": "^16.0.0"
+    "express": "^5.1.0"
 
   }
 }
