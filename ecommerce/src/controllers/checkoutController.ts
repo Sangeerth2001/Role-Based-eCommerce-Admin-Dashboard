@@ -115,7 +115,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'price', 'imageUrl'],
+              attributes: ['id', 'name', 'price', 'image'],
             },
           ],
         },
@@ -128,7 +128,13 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
       data: completeOrder,
     });
   } catch (error) {
-    await transaction.rollback();
+    // Only rollback if transaction hasn't been committed or rolled back
+    try {
+      await transaction.rollback();
+    } catch (rollbackError) {
+      // Transaction was already finished (committed or rolled back), ignore the error
+      console.log('Transaction already finished, skipping rollback');
+    }
     console.error('Error creating order:', error);
     res.status(500).json({
       success: false,

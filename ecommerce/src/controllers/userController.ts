@@ -156,7 +156,7 @@ export const getUserOrders = async (req: Request, res: Response): Promise<void> 
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'price', 'imageUrl'],
+              attributes: ['id', 'name', 'price', 'image'],
             },
           ],
         },
@@ -207,7 +207,7 @@ export const getUserOrderById = async (req: Request, res: Response): Promise<voi
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'price', 'imageUrl', 'description'],
+              attributes: ['id', 'name', 'price', 'image', 'description'],
             },
           ],
         },

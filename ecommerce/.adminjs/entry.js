@@ -1,8 +1,6 @@
 AdminJS.UserComponents = {}
 import AdminDashboard from '../dist/admin/components/AdminDashboard'
 AdminJS.UserComponents.AdminDashboard = AdminDashboard
-import UserDashboard from '../dist/admin/components/UserDashboard'
-AdminJS.UserComponents.UserDashboard = UserDashboard
 import RoleDashboard from '../dist/admin/components/RoleDashboard'
 AdminJS.UserComponents.RoleDashboard = RoleDashboard
 import SettingsPage from '../dist/admin/components/SettingsPage'

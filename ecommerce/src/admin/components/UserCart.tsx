@@ -12,7 +12,7 @@ interface CartItem {
     name: string;
     price: number;
     stock: number;
-    imageUrl?: string;
+    image?: string;
   };
 }
 
@@ -188,7 +188,7 @@ const UserCart: React.FC = () => {
                             backgroundColor: '#f0f0f0',
                             borderRadius: '4px',
                             marginRight: '12px',
-                            backgroundImage: item.product.imageUrl ? `url(${item.product.imageUrl})` : 'none',
+                            backgroundImage: item.product.image ? `url(${item.product.image})` : 'none',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                           }}

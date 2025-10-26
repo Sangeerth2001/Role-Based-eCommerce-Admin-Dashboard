@@ -9,7 +9,7 @@ interface Product {
   price: number;
   stock: number;
   categoryId: number;
-  imageUrl?: string;
+  image?: string;
   category?: {
     id: number;
     name: string;
@@ -201,12 +201,12 @@ const UserProducts: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundImage: product.imageUrl ? `url(${product.imageUrl})` : 'none',
+                    backgroundImage: product.image ? `url(${product.image})` : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 >
-                  {!product.imageUrl && (
+                  {!product.image && (
                     <Text color="grey60">No Image</Text>
                   )}
                 </Box>

@@ -26,7 +26,8 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
         {
           model: Product,
           as: 'product',
-          attributes: ['id', 'name', 'price', 'stock', 'imageUrl', 'description'],
+          attributes: ['id', 'name', 'price', 'stock', 'image', 'description'],
+          required: false, // Use LEFT JOIN to avoid issues if product is deleted
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -34,17 +35,26 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 
     console.log('📦 Found cart items:', cartItems.length);
 
-    // Calculate total
+    // Calculate total and filter out items with deleted products
     let total = 0;
-    const items = cartItems.map((item) => {
-      const cartItem = item.toJSON() as any;
-      const itemTotal = Number(cartItem.product.price) * cartItem.quantity;
-      total += itemTotal;
-      return {
-        ...cartItem,
-        itemTotal,
-      };
-    });
+    const items = cartItems
+      .map((item) => {
+        const cartItem = item.toJSON() as any;
+
+        // Skip items where product was deleted
+        if (!cartItem.product) {
+          console.warn(`⚠️ Cart item ${item.id} has no product (likely deleted)`);
+          return null;
+        }
+
+        const itemTotal = Number(cartItem.product.price) * cartItem.quantity;
+        total += itemTotal;
+        return {
+          ...cartItem,
+          itemTotal,
+        };
+      })
+      .filter((item) => item !== null); // Remove null entries
 
     res.json({
       success: true,

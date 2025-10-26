@@ -15,7 +15,7 @@ export const getAllCategories = async (req: Request, res: Response): Promise<voi
             {
               model: Product,
               as: 'products',
-              attributes: ['id', 'name', 'price', 'stock', 'imageUrl'],
+              attributes: ['id', 'name', 'price', 'stock', 'image'],
             },
           ]
         : undefined,
@@ -49,7 +49,7 @@ export const getCategoryById = async (req: Request, res: Response): Promise<void
         {
           model: Product,
           as: 'products',
-          attributes: ['id', 'name', 'price', 'stock', 'imageUrl', 'description'],
+          attributes: ['id', 'name', 'price', 'stock', 'image', 'description'],
         },
       ],
     });
