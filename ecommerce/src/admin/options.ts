@@ -8,8 +8,11 @@ import productResourceOptions from './resources/productResource.js';
 import orderResourceOptions from './resources/orderResource.js';
 import orderItemResourceOptions from './resources/orderItemResource.js';
 import settingResourceOptions from './resources/settingResource.js';
-import adminDashboard from './pages/adminDashboard.js';
 import settingsPage from './pages/settings.js';
+import {
+  isResourceAccessible,
+  isResourceVisible,
+} from './rbac.js';
 
 const options: AdminJSOptions = {
   componentLoader,
@@ -19,69 +22,54 @@ const options: AdminJSOptions = {
       resource: User,
       options: {
         ...userResourceOptions,
-        // Only admins can access user management
-        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
-        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        // RBAC: Only admins can access user management
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'User'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'User'),
       },
     },
     {
       resource: Category,
       options: {
         ...categoryResourceOptions,
-        // Both admins and users can view categories
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
+        // RBAC: Only admins can access categories
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'Category'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'Category'),
       },
     },
     {
       resource: Product,
       options: {
         ...productResourceOptions,
-        // Both admins and users can view products
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
+        // RBAC: Only admins can access products in admin panel
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'Product'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'Product'),
       },
     },
     {
       resource: Order,
       options: {
         ...orderResourceOptions,
-        // Both admins and users can view orders (users will only see their own)
-        isAccessible: ({ currentAdmin }) => !!currentAdmin,
-        isVisible: ({ currentAdmin }) => !!currentAdmin,
-        actions: {
-          list: {
-            before: async (request, context) => {
-              const { currentAdmin } = context;
-              // If user is not an admin, filter orders to show only their own
-              if (currentAdmin && currentAdmin.role !== 'admin') {
-                request.query = {
-                  ...request.query,
-                  'filters.userId': currentAdmin.id,
-                };
-              }
-              return request;
-            },
-          },
-        },
+        // RBAC: Admins can access all orders
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'Order'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'Order'),
       },
     },
     {
       resource: OrderItem,
       options: {
         ...orderItemResourceOptions,
-        // Only admins can access order items directly
-        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
-        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        // RBAC: Only admins can access order items directly
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'OrderItem'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'OrderItem'),
       },
     },
     {
       resource: Setting,
       options: {
         ...settingResourceOptions,
-        // Only admins can access settings
-        isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
-        isVisible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+        // RBAC: Only admins can access settings
+        isAccessible: ({ currentAdmin }) => isResourceAccessible(currentAdmin, 'Setting'),
+        isVisible: ({ currentAdmin }) => isResourceVisible(currentAdmin, 'Setting'),
       },
     },
   ],
@@ -95,11 +83,28 @@ const options: AdminJSOptions = {
     scripts: ['/public/admin-custom.js'],
   },
   pages: {
-    dashboard: adminDashboard,
+    // Admin-only pages - RBAC controlled in component
     settings: settingsPage,
+    // User pages - accessible to regular users - RBAC controlled in components
+    products: {
+      component: 'UserProducts',
+      icon: 'ShoppingCart',
+    },
+    cart: {
+      component: 'UserCart',
+      icon: 'ShoppingBag',
+    },
+    checkout: {
+      component: 'UserCheckout',
+      icon: 'CreditCard',
+    },
+    'user-settings': {
+      component: 'UserSettings',
+      icon: 'User',
+    },
   },
   dashboard: {
-    component: 'AdminDashboard',
+    component: 'RoleDashboard', // Smart component that shows AdminDashboard or UserDashboard based on role
   },
 };
 
