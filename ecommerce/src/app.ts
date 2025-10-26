@@ -118,6 +118,55 @@ const start = async () => {
   app.use('/api/user', userRoutes);
   app.use('/api/checkout', checkoutRoutes);
 
+  // Seed database endpoint (for initial setup)
+  app.post('/api/seed', async (req, res) => {
+    try {
+      const { User, Category, Product } = await import('./db/index.js');
+
+      // Check if users already exist
+      const existingUsers = await User.count();
+      if (existingUsers > 0) {
+        return res.json({
+          success: false,
+          message: 'Database already has users. Seed skipped.',
+          existingUsers,
+        });
+      }
+
+      // Create admin user
+      const admin = await User.create({
+        name: 'Admin User',
+        email: 'admin@example.com',
+        password: 'admin123',
+        role: 'admin',
+      });
+
+      // Create regular user
+      const user = await User.create({
+        name: 'John Doe',
+        email: 'john@example.com',
+        password: 'user123',
+        role: 'user',
+      });
+
+      res.json({
+        success: true,
+        message: 'Database seeded successfully!',
+        users: [
+          { email: 'admin@example.com', password: 'admin123', role: 'admin' },
+          { email: 'john@example.com', password: 'user123', role: 'user' },
+        ],
+      });
+    } catch (error) {
+      console.error('Seed error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error seeding database',
+        error: error.message,
+      });
+    }
+  });
+
   // Root route - redirect to admin panel
   app.get('/', (req, res) => {
     res.json({
@@ -125,6 +174,7 @@ const start = async () => {
       endpoints: {
         admin: '/admin',
         api: '/api',
+        seed: '/api/seed (POST)',
       },
       documentation: {
         adminPanel: `${req.protocol}://${req.get('host')}/admin`,
