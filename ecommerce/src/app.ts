@@ -15,6 +15,7 @@ import categoryRoutes from './routes/api/categoryRoutes.js';
 import cartRoutes from './routes/api/cartRoutes.js';
 import userRoutes from './routes/api/userRoutes.js';
 import checkoutRoutes from './routes/api/checkoutRoutes.js';
+import authRoutes from './routes/api/authRoutes.js';
 
 const port = process.env.PORT || 3000;
 
@@ -95,6 +96,9 @@ const start = async () => {
   // API Routes
   app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/settings', settingsRoutes);
+
+  // Authentication routes (JWT-based)
+  app.use('/api/auth', authRoutes);
 
   // User-facing API routes
   app.use('/api/products', productRoutes);
