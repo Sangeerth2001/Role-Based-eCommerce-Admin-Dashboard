@@ -5,7 +5,7 @@ import { User } from '../db/index.js';
 
 /**
  * Authentication provider that validates against the database
- * Allows both admin and regular users to access the admin panel
+ * Allows all users to login, but resources are restricted by role
  */
 const provider = new DefaultAuthProvider({
   componentLoader,
@@ -24,8 +24,7 @@ const provider = new DefaultAuthProvider({
       return null;
     }
 
-    // Allow both admin and regular users to access admin panel
-    // Return user data for session
+    // Allow all users to login - access is controlled by resource-level permissions
     return {
       email: user.email,
       name: user.name,

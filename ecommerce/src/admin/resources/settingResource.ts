@@ -1,4 +1,5 @@
 import { ResourceOptions } from 'adminjs';
+import { getActionsConfig } from '../rbac.js';
 
 const settingResourceOptions: ResourceOptions = {
   navigation: {
@@ -33,6 +34,27 @@ const settingResourceOptions: ResourceOptions = {
   showProperties: ['id', 'key', 'value', 'description', 'createdAt', 'updatedAt'],
   editProperties: ['key', 'value', 'description'],
   filterProperties: ['key', 'createdAt'],
+  // RBAC: Action-level permissions
+  actions: {
+    list: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').list,
+    },
+    show: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').show,
+    },
+    new: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').new,
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').edit,
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').delete,
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Setting').bulkDelete,
+    },
+  },
 };
 
 export default settingResourceOptions;

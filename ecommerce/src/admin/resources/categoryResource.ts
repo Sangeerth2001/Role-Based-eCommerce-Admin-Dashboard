@@ -1,4 +1,5 @@
 import { ResourceOptions } from 'adminjs';
+import { getActionsConfig } from '../rbac.js';
 
 const categoryResourceOptions: ResourceOptions = {
   navigation: {
@@ -28,6 +29,27 @@ const categoryResourceOptions: ResourceOptions = {
   showProperties: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
   editProperties: ['name', 'description'],
   filterProperties: ['name', 'createdAt'],
+  // RBAC: Action-level permissions
+  actions: {
+    list: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').list,
+    },
+    show: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').show,
+    },
+    new: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').new,
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').edit,
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').delete,
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }) => getActionsConfig(currentAdmin, 'Category').bulkDelete,
+    },
+  },
 };
 
 export default categoryResourceOptions;
