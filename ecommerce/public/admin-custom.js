@@ -67,8 +67,16 @@
     fetch('/admin/api/getCurrentUser', {
       credentials: 'include'
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 401) {
+        // Not logged in - this is normal, don't show error
+        return null;
+      }
+      return res.json();
+    })
     .then(data => {
+      if (!data) return; // Not logged in
+
       const currentUser = data.currentAdmin || data.user;
       if (!currentUser) return;
 
@@ -126,7 +134,7 @@
       }
     })
     .catch(err => {
-      console.error('Error fetching current user:', err);
+      // Silently ignore errors (usually means not logged in)
     });
   }
 
