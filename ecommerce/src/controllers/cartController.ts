@@ -7,13 +7,18 @@ import { Cart, Product } from '../db/index.js';
  */
 export const getCart = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log('📦 Cart request - User:', req.user);
+
     if (!req.user) {
+      console.error('❌ No user in request');
       res.status(401).json({
         success: false,
         message: 'Not authenticated',
       });
       return;
     }
+
+    console.log('✅ Fetching cart for user ID:', req.user.id);
 
     const cartItems = await Cart.findAll({
       where: { userId: req.user.id },
@@ -26,6 +31,8 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
       ],
       order: [['createdAt', 'DESC']],
     });
+
+    console.log('📦 Found cart items:', cartItems.length);
 
     // Calculate total
     let total = 0;
@@ -46,10 +53,11 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
       count: items.length,
     });
   } catch (error) {
-    console.error('Error fetching cart:', error);
+    console.error('❌ Error fetching cart:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch cart',
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 };
