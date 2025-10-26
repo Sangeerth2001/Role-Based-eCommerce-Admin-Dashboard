@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { getUserProfile, updateUserProfile, getUserOrders, getUserOrderById } from '../../controllers/userController.js';
-import { authenticateHybrid } from '../../middleware/jwtAuth.js';
+import { adminSessionAuth } from '../../middleware/adminSession.js';
 
 const router = Router();
 
-// All user routes require authentication (accepts session OR JWT)
-router.use(authenticateHybrid);
+// All user routes require authentication (uses AdminJS session)
+router.use(adminSessionAuth);
 
 // GET /api/user/profile - Get user profile
 router.get('/profile', getUserProfile);

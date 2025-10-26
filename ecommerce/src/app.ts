@@ -41,9 +41,11 @@ const start = async () => {
     secret: process.env.COOKIE_SECRET || 'fallback-secret-change-this',
     saveUninitialized: true,
     resave: true,
+    name: 'adminjs', // Use same cookie name as AdminJS
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax', // Important for session cookies
     },
   });
 
@@ -52,7 +54,7 @@ const start = async () => {
   const router = buildAuthenticatedRouter(
     admin,
     {
-      cookiePassword: process.env.COOKIE_SECRET,
+      cookiePassword: process.env.COOKIE_SECRET || 'fallback-secret-change-this',
       cookieName: 'adminjs',
       provider,
     },
